@@ -1,0 +1,8 @@
+import math
+a=float(input("输入直角三角形第一条边"))
+b=float(input("输入直角三角形第二条边"))
+c=float(input("输入直角三角形第三条边"))
+#计算海伦公式中p的值,即半周长
+p=(a+b+c)/2
+s=math.sqrt(p*(p-a)*(p-b)*(p-c))
+print(s)
