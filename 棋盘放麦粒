@@ -1,0 +1,9 @@
+total_grains = 0  # 总的麦粒数量
+current_grains = 1  # 当前格子上的麦粒数量，初始为1
+
+# 遍历64个格子
+for _ in range(64):
+    total_grains += current_grains  # 累加当前格子上的麦粒数量
+    current_grains *= 2  # 下一个格子的麦粒数量是当前格子的两倍
+
+print(f"64个格子上的总麦粒数量为：{total_grains}粒")
