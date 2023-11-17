@@ -1,0 +1,15 @@
+#read file,需要在py文件所在的文件存在一个data.txt
+infile=open('data.txt','r')
+
+#read lines,将所有行的数据都读取,形成一个列表
+lines=infile.readlines()
+
+mean=0
+for number in lines:   
+   mean+=float(number)
+mean=mean/len(lines)
+
+#close file
+infile.close()
+
+print(mean)
