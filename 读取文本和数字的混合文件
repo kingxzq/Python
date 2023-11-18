@@ -1,0 +1,28 @@
+#读取文本和数字的混合文件，使用rainfall.dat数据
+
+def extract_data(filename):
+    infile=open(filename,'r')
+    infile.readline()   #读取第一行数据,文件指针指向第二行
+    months=[]
+    rainfall=[]
+    for line in infile:
+        words=line.split()   #word[0]:month,word[1]:rainfall
+        months.append(words[0])
+        rainfall.append(float(words[1]))
+    infile.close
+    months=months[0:-1]   #去掉最后一行的年降雨量
+    annual_avg=rainfall[-1]  #保留年降雨量的数据
+    rainfall=rainfall[0:-1]
+    return months,rainfall,annual_avg
+
+
+months,values,avg=extract_data('rainfall.dat')
+print("按月的平均降雨量是:")
+
+#zip() 函数用于将可迭代的对象作为参数，
+#将对象中对应的元素打包成一个个元组，
+#然后返回由这些元组组成的对象
+
+for month,values in zip(months,values):  
+    print('month=',month,'value=',values)
+print('年平均降雨量为:'
