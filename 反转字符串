@@ -1,2 +1,3 @@
 s="abc"
 t=reverse(s)
+print(s)
