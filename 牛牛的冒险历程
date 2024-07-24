@@ -1,0 +1,48 @@
+#coding:utf-8
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+#
+# 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可
+#
+# 
+# @param head ListNode类 
+# @return int整型
+#
+def gcd(a, b):
+    while b:
+        a, b = b, a % b
+    return a
+class Solution:
+    
+    def gcdInCycle(self , head ):
+        # write code here
+        cur = head
+        len = 0
+        count={}
+        list1,list2,list3 =[],[],[]
+        while cur:
+            list1.append(cur.val)
+            cur = cur.next
+            len+=1
+        cur=head
+        
+        for num in list1:
+            if num in count:
+                count[num]+=1
+            else:
+                count[num]=1
+        print(count)
+        for key,value in count.items():
+            if value!=1:
+                list2.append(key)
+            else:
+                list3.append(1)
+        if sum(list3)==len:
+            return -1
+        else:
+            gcd_result = list2[0]
+            for num in list2[1:]:
+                gcd_result = gcd(gcd_result, num)
+            return gcd_result
