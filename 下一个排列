@@ -1,0 +1,27 @@
+#
+# 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可
+#
+# 
+# @param nums int整型一维数组 
+# @return int整型一维数组
+#
+class Solution:
+    def nextPermutation(self , nums: List[int]) -> List[int]:
+        # write code here
+        # 判断是否为下降序列
+        is_decrese = True
+        for i in range(1, len(nums)):
+            if nums[i] > nums[i-1]:
+                is_decrese = False
+        if is_decrese:
+            return nums[::-1]
+        # 右指针最右边，逐步往左边找比右指针小的值，找到交换返回即可
+        # 一次次找，找不到就左移右指针
+        right = len(nums)-1
+        while right > 0:
+            for i in range(right-1, -1,-1):
+                if nums[i] < nums[right]:
+                    nums[i], nums[right] = nums[right], nums[i]
+                    return nums
+            right -= 1
+        return nums
