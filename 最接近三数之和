@@ -1,0 +1,20 @@
+增加一个python
+# 和计算三数之和思路一样，双指针 
+        nums.sort()
+        n = len(nums) 
+        min_sum = float('inf')
+        res = 0
+        for i in range(n):
+            left, right = i+1, n-1 
+            while left < right:
+                temp = nums[i] + nums[left] + nums[right]
+                if temp == target:
+                    return temp 
+                elif temp > target:
+                    right -= 1
+                else:
+                    left += 1
+                if abs(temp - target) < min_sum:
+                    min_sum = abs(temp - target)
+                    res = temp
+        return res
