@@ -1,0 +1,15 @@
+class Solution:
+    # 返回构造的TreeNode根节点
+    def reConstructBinaryTree(self, pre, tin):
+        # write code here
+        if not pre:
+            return None
+        # 根节点
+        root = TreeNode(pre[0])
+        # 根节点在中序遍历中的位置索引
+        tmp = tin.index(pre[0])
+        # 递归 构造树的左子树
+        root.left = self.reConstructBinaryTree(pre[1:tmp+1], tin[:tmp])
+        # 递归构造树的右子树
+        root.right = self.reConstructBinaryTree(pre[tmp+1:], tin[tmp+1:])
+        return root
