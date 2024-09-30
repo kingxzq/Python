@@ -1,0 +1,178 @@
+#Prim 算法和 Kruskal 算法是两种不同的最小生成树算法，它们的选择边的顺序以及生成最小生成树的过程不同，因此在某些情况下，它们得到的最小生成树结果可能不一样,在这里prim算法中部分算例不通过
+
+# # #方法一，基于(克鲁斯卡尔)Kruskal算法，选择最小权重的边,利用并查集（并查集（Union Find）：一种用于管理分组的数据结构 （一般使用树形结构来表示）Find：查询 a 元素和 b 元素是否为同一组Union：合并元素 a 和 b 为同一组
+# class Graph:
+#     #图，顶点数目，边的起止点，权重
+#     def __init__(self, vertices) -> None:
+#         # 顶点数目
+#         self.v = vertices
+#         self.graph = []
+
+#     def add_edge(self, src, dest, weight):
+#         self.graph.append([src, dest, weight])
+
+#     # 递归，寻找i对应的根节点；递归终止条件按是找到根节点，即parent[i]==i
+#     def find_set(self, parent, i):
+#         if parent[i] == i:
+#             return i
+#         return self.find_set(parent, parent[i])
+
+#     # 合并集合（集合以根节点标识），比较 rank 并采用按秩合并的方式，是为了在并查集操作中保持较低的树高度，从而提高整体的性能和效率。
+#     def union(self, parent, rank, x, y):
+#         x_root = self.find_set(parent, x)
+#         y_root = self.find_set(parent, y)
+#         if rank[x_root] < rank[y_root]:
+#             parent[x_root] = y_root
+#         elif rank[x_root] > rank[y_root]:
+#             parent[y_root] = x_root
+#         else:
+#             parent[y_root] = x_root
+#             rank[x_root] += 1
+
+#     def kruskal(self):
+#         result = 0
+#         i = 0
+#         e = 0
+#         parent = []
+#         rank = []
+#         # lambda item: item[2] 是一个匿名函数（也称为 Lambda 函数），它接受一个参数 item，并返回 item 的第三个值（即 item[2]）。这个 Lambda 函数在排序过程中被用作 key 参数传递给 sorted 函数
+#         self.graph = sorted(self.graph, key=lambda item: item[2])
+#         for node in range(self.v):
+#             parent.append(node)
+#             rank.append(0)
+#         #print(rank, parent)
+#         while e < self.v - 1:
+#             src, dest, weight = self.graph[i]
+#             i += 1
+#             #print(src, dest)
+#             x = self.find_set(parent, src)
+#             y = self.find_set(parent, dest)
+#             if x != y:
+#                 e = e + 1
+#                 result = result + weight
+#                 self.union(parent, rank, x, y)
+#         return result
+
+
+# class Solution:
+#     def miniSpanningTree(self, n, m, cost):
+#         # write code here
+#         g = Graph(n)
+#         for i in range(m):
+#             src, dest, weight = cost[i]
+#             #索引从0，不妨取节点从0开始
+#             g.add_edge(src - 1, dest - 1, weight)
+#         return g.kruskal()
+
+
+# #方法二，基于（普里姆）prim算法，用两个集合A{}，B{}分别表示找到的点集，和未找到的点集；以A中的点为起点a，在B中找一个点为终点b，这两个点构成的边（a，b）的权值是其余边中最小的重复上述步骤#2，直至B中的点集为空，A中的点集为满
+#Prim 算法通常会使用堆结构来优化查找最小成本边的过程。在每次查找最小边的时候，可以使用最小堆（min-heap）来维护当前连接到已访问村庄的边的集合，以便快速地找到最小成本的边。
+
+# import heapq
+# class Graph():
+#     def __init__(self,vertices,) -> None:
+#         self.v=vertices
+#         #for _ in 中_表示一个无所谓的变量，作为占位符
+#         self.graph=[[0]*self.v for _ in range(int(self.v))]
+
+#     def add_edge(self, src, dest, weight):
+#         #无向图
+#         self.graph[src][dest] = weight
+#         self.graph[dest][src] = weight
+
+#     def Prim(self):
+#         #初始父节点
+#         parent=[-1]*self.v
+#         key=[float('inf')]*self.v
+#         mst_set=[False]*self.v
+#         heap=[]
+#         key[0]=0 
+#         heapq.heappush(heap,(0,0))
+
+#         while heap:
+#             min_key,min_index=heapq.heappop(heap)
+#             if min_key>key[min_index]:
+#                 continue
+            
+#             mst_set[min_index]=True
+
+#             for i in range(self.v):
+#                 if (
+#                     self.graph[min_index][i]!=0
+#                     and not mst_set[i]
+#                     and self.graph[min_index][i]<key[i]
+#                 ):
+#                     parent[i]=min_index
+#                     key[i]=self.graph[min_index][i]
+#                     heapq.heappush(heap,(key[i],i))
+        
+#         result=0
+#         for i in range(1,self.v):
+#             result+=self.graph[i][parent[i]]
+
+#         return result
+
+
+
+# class Solution:
+#     def miniSpanningTree(self, n, m, cost):
+#         # write code here
+#         g = Graph(n)
+#         for i in range(m):
+#             src, dest, weight = cost[i]
+#             #索引从0，不妨取节点从0开始
+#             g.add_edge(src-1 , dest-1 , weight)
+#         return g.Prim()
+
+#方法三，不用heap结构的prim算法
+class Graph():
+    def __init__(self,vertices,) -> None:
+        self.v=vertices
+        #for _ in 中_表示一个无所谓的变量，作为占位符
+        self.graph=[[0]*self.v for _ in range(int(self.v))]
+
+    def add_edge(self, src, dest, weight):
+        #无向图
+        self.graph[src][dest] = weight
+        self.graph[dest][src] = weight
+
+    def prim(self):
+        mst_set = [False] * self.v
+        key = [float('inf')] * self.v
+        parent = [-1] * self.v
+
+        key[0] = 0
+
+        for _ in range(self.v - 1):
+            min_key = float('inf')
+            u = -1
+
+            for v in range(self.v):
+                if not mst_set[v] and key[v] < min_key:
+                    min_key = key[v]
+                    u = v
+
+            mst_set[u] = True
+
+            for v in range(self.v):
+                if (
+                    self.graph[u][v] > 0
+                    and not mst_set[v]
+                    and self.graph[u][v] < key[v]
+                ):
+                    key[v] = self.graph[u][v]
+                    parent[v] = u
+
+        result = sum(key)
+        return result
+
+            
+class Solution:
+    def miniSpanningTree(self, n, m, cost):
+        # write code here
+        g = Graph(n)
+        for i in range(m):
+            src, dest, weight = cost[i]
+            #索引从0，不妨取节点从0开始
+            g.add_edge(src-1 , dest-1 , weight)
+        return g.prim()
